@@ -37,11 +37,38 @@
     </div>
   </nav>
 
+  <div class="container mt-5 pt-3">
+    <h1 id="webHeading"></h1>
+    <form onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label class="text-white" for="name">Movie Title</label>
+        <input type="text" class="form-control" id="name" required>
+      </div>
+      <div class="form-group">
+        <label class="text-white" for="description">Synopsys</label>
+        <textarea rows="3" type="text" class="form-control" id="description" required></textarea>
+      </div>
+      <div class="form-group">
+        <label class="text-white" for="category">Category</label>
+        <select id="category" name="category">
+          <option value="horror">Horror</option>
+          <option value="drama">Drama</option>
+          <option value="comedy">Comedy</option>
+          <option value="action">Action</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="text-white" for="imageUrl">Image Source (link)</label>
+        <input type="url" class="form-control" id="imageUrl">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    <script src="./script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>
