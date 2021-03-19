@@ -56,7 +56,6 @@ const getAll = () => {Promise.all([
     movieCard.classList.add("col", "text-center", "mb-3", "mb-lg-0", "px-1")
     movieCard.innerHTML = `<img class="img-fluid rounded" src="${elem.imageUrl}" /><span>${elem.name}</span>`
     allMovContainer.appendChild(movieCard)
-    
   });
 }).catch((error) => {
 	console.log(error);
@@ -212,10 +211,6 @@ const handleDelete = async (_id) => {
       }
     }
 
-    const handleEdit = (_id) => {
-      window.location.assign("backoffice.html?id=" + _id);
-    }
-
     function getAllList() {
   Promise.all([
     fetch(mainUrl + "horror", {
@@ -262,7 +257,7 @@ const handleDelete = async (_id) => {
             <td>
               <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-danger" onclick="handleDelete('${element._id}')">DEL</button>
-                <button type="button" class="btn btn-success" onclick="handleEdit(${element._id}')">EDIT</button>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter" onclick="handleEditGet('${element._id}')">EDIT</button>
               </div>
             </td>
             `;
@@ -272,3 +267,82 @@ const handleDelete = async (_id) => {
   }).catch((error) => {
 	console.log(error);
 });}
+
+const handleEditGet = async (genId) => {
+      Promise.all([
+	fetch(mainUrl + "horror", {
+          method: 'GET',
+          headers: {
+            "Content-Type" : "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+          }
+        }),
+	fetch(mainUrl + "drama", {
+          method: 'GET',
+          headers: {
+            "Content-Type" : "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+          }
+        }),
+	fetch(mainUrl + "comedy", {
+          method: 'GET',
+          headers: {
+            "Content-Type" : "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+          }
+        }),
+	fetch(mainUrl + "action", {
+          method: 'GET',
+          headers: {
+            "Content-Type" : "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+          }
+        }),
+]).then((responses) => {
+	// Get a JSON object from each of the responses
+	return Promise.all(responses.map((response) => {
+		return response.json();
+	}));
+}).then((data) => {
+  const flatData = data.flat(1)
+  const filteredData = flatData.find(({_id}) => _id === genId)
+	// console.log(flatData)
+  // console.log(filteredData)
+  document.getElementById("nameModal").value = filteredData.name
+  document.getElementById("descriptionModal").value = filteredData.description
+  document.getElementById("categoryModal").value = filteredData.category
+  document.getElementById("imageUrlModal").value = filteredData.imageUrl
+  document.getElementById("idModal").value = filteredData._id
+}).catch((error) => {
+	console.log(error);
+});}
+
+const handleEditPut = async (e) => {
+      e.preventDefault()
+      let id = document.getElementById("idModal").value
+      let movieData = {
+        name : document.getElementById("nameModal").value,
+        description : document.getElementById("descriptionModal").value,
+        category : document.getElementById("categoryModal").value,
+        imageUrl : document.getElementById("imageUrlModal").value
+      }
+      console.log(id)
+      try {
+        let response = await fetch(mainUrl + id, {
+            method: 'PUT',
+            body: JSON.stringify(movieData),
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+            }
+          })
+        if (response.ok) {
+          alert("You've updated the movie's detail!")
+          window.location.assign("backoffice.html")
+        } else {
+          alert("something went wrong.")
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
