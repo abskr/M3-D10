@@ -193,9 +193,9 @@ const handleSubmit = async (e) => {
 
 }
 
-const handleDelete = async (cat, _id) => {
+const handleDelete = async (_id) => {
       try {
-        let response = await fetch(mainUrl + cat + _id, {
+        let response = await fetch(mainUrl + _id, {
           method: 'DELETE',
           headers: {
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
@@ -215,3 +215,60 @@ const handleDelete = async (cat, _id) => {
     const handleEdit = (_id) => {
       window.location.assign("backoffice.html?id=" + _id);
     }
+
+    function getAllList() {
+  Promise.all([
+    fetch(mainUrl + "horror", {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+      }
+    }),
+    fetch(mainUrl + "drama", {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+      }
+    }),
+    fetch(mainUrl + "comedy", {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+      }
+    }),
+    fetch(mainUrl + "action", {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+      }
+    }),
+  ]).then((responses) => {
+    return Promise.all(responses.map((response) => {
+      return response.json();
+    }));
+  }).then((data) => {
+    const flatData = data.flat(1);
+    console.log(flatData);
+    flatData.forEach(element => {
+      let tBody = document.getElementById("tableBody")
+      let itemList = document.createElement("tr");
+      itemList.innerHTML = `
+            <td>${element.name}</td>
+            <td>${element.category}</td>
+            <td>
+              <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-danger" onclick="handleDelete('${element._id}')">DEL</button>
+                <button type="button" class="btn btn-success" onclick="handleEdit(${element._id}')">EDIT</button>
+              </div>
+            </td>
+            `;
+      tBody.appendChild(itemList);
+    });
+
+  }).catch((error) => {
+	console.log(error);
+});}

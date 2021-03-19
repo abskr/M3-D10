@@ -39,7 +39,7 @@
 
   <div class="container mt-5 pt-3">
     <h1 id="webHeading"></h1>
-    <form onsubmit="handleSubmit(event)">
+    <form class="mb-3" onsubmit="handleSubmit(event)">
       <div class="form-group">
         <label class="text-white" for="name">Movie Title</label>
         <input type="text" class="form-control" id="name" required>
@@ -64,7 +64,25 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
+    <table class="table text-center w-100">
+      <thead>
+        <tr>
+          <th scope="col">Movie Title</th>
+          <th scope="col">Category</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!--template this-->
 
+      </tbody>
+    </table>
+
+    <script>
+      window.onload = () => {
+        getAllList()
+      }
+    </script>
     <script src="./script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
