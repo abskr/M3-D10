@@ -1,4 +1,5 @@
 const mainUrl = "https://striveschool-api.herokuapp.com/api/movies/"
+let mainCont = document.getElementById("mainContainer")
 
 // async function getAll(cat) {
 //   let resp = await fetch(mainUrl + cat, {
@@ -13,7 +14,35 @@ const mainUrl = "https://striveschool-api.herokuapp.com/api/movies/"
 
 // const allPromises = [getAll("action"), getAll("horror"), getAll("drama"), getAll("comedy")]
 
-const getAll = () => {Promise.all([
+const getAll = async () => {
+  try {
+    let response = await 	fetch(mainUrl, {
+          method: 'GET',
+          headers: {
+            "Content-Type" : "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
+          }
+        })
+    let data = await response.json()
+    data.push("allMovies")
+    data.reverse()
+    //console.log(data)
+    data.forEach (elem => {
+      //console.log(elem)
+      let catHeading = document.createElement("h3")
+      let catRow = document.createElement("div")
+      catRow.classList.add("row", "no-gutters", "row-cols-1", "row-cols-sm-2", "row-cols-md-3", "row-cols-lg-4", "mb-4")
+      catRow.setAttribute("id", elem)
+      catHeading.classList.add("mt-4", "text-white", "caps")
+      catHeading.innerText = elem === "allMovies" ? "Your Movies" : elem
+      mainCont.appendChild(catHeading)
+      mainCont.appendChild(catRow)
+    })
+  } catch (error) {
+    console.log(error)
+  }
+  
+  Promise.all([
 	fetch(mainUrl + "horror", {
           method: 'GET',
           headers: {
@@ -48,111 +77,201 @@ const getAll = () => {Promise.all([
 		return response.json();
 	}));
 }).then((data) => {
+  //console.log(data)
   const flatData = data.flat(1)
-	console.log(flatData)
+	//console.log(flatData)
   flatData.forEach(elem => {
-    let allMovContainer = document.getElementById("allMovies")
-    let movieCard = document.createElement("div")
-    movieCard.classList.add("col", "text-center", "mb-3", "mb-lg-0", "px-1")
-    movieCard.innerHTML = `<img class="img-fluid rounded" src="${elem.imageUrl}" /><span>${elem.name}</span>`
-    allMovContainer.appendChild(movieCard)
-  });
+  const allMovRow = document.getElementById("allMovies")
+  //console.log(allMovRow)
+  const movCol = document.createElement("div")
+  movCol.classList.add("col", "mb-3", "mb-lg-0", "px-1")
+  movCol.innerHTML = `
+      <div class="col mb-3 mb-lg-0 px-1">
+      <div class="strive-card position-relative">
+        <img class="img-fluid rounded w-100" src="${elem.imageUrl}" />
+
+        <div class="infos-container">
+          <div class="infos-content">
+            <div class="d-flex align-items-center mb-3">
+              <div class="play-btn gradient"></div>
+              <h6 class="mb-0 ml-2">Play</h6>
+              <span class="plus ml-auto">
+
+              </span>
+            </div>
+
+            <h6>${elem.name}</h6>
+            <p>
+              ${elem.description}
+            </p>
+            <div class="movie-footer">
+              <span class="mr-2">${elem.category}</span>
+              <i class="fa fa-address-card fa-lg mr-2"></i>
+              <i class="fa fa-calendar-check-o fa-lg"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+    //console.log(movCol)
+    allMovRow.appendChild(movCol)
+    })
+
+  const horrorMov = flatData.filter(movie => movie.category === "horror")
+  //console.log(horrorMov)
+  horrorMov.forEach(elem => {
+  const horrorRow = document.getElementById("horror")
+  //console.log(allMovRow)
+  const movCol = document.createElement("div")
+  movCol.classList.add("col", "mb-3", "mb-lg-0", "px-1")
+  movCol.innerHTML = `
+      <div class="col mb-3 mb-lg-0 px-1">
+      <div class="strive-card position-relative">
+        <img class="img-fluid rounded w-100" src="${elem.imageUrl}" />
+
+        <div class="infos-container">
+          <div class="infos-content">
+            <div class="d-flex align-items-center mb-3">
+              <div class="play-btn gradient"></div>
+              <h6 class="mb-0 ml-2">Play</h6>
+              <span class="plus ml-auto">
+
+              </span>
+            </div>
+
+            <h6>${elem.name}</h6>
+            <p>
+              ${elem.description}
+            </p>
+            <div class="movie-footer">
+              <i class="fa fa-address-card fa-lg mr-2"></i>
+              <i class="fa fa-calendar-check-o fa-lg"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+    //console.log(movCol)
+    horrorRow.appendChild(movCol)
+  })
+
+  const actionMov = flatData.filter(movie => movie.category === "action")
+  //console.log(horrorMov)
+  actionMov.forEach(elem => {
+  const actionRow = document.getElementById("action")
+  //console.log(allMovRow)
+  const movCol = document.createElement("div")
+  movCol.classList.add("col", "mb-3", "mb-lg-0", "px-1")
+  movCol.innerHTML = `
+      <div class="col mb-3 mb-lg-0 px-1">
+      <div class="strive-card position-relative">
+        <img class="img-fluid rounded w-100" src="${elem.imageUrl}" />
+
+        <div class="infos-container">
+          <div class="infos-content">
+            <div class="d-flex align-items-center mb-3">
+              <div class="play-btn gradient"></div>
+              <h6 class="mb-0 ml-2">Play</h6>
+              <span class="plus ml-auto">
+
+              </span>
+            </div>
+
+            <h6>${elem.name}</h6>
+            <p>
+              ${elem.description}
+            </p>
+            <div class="movie-footer">
+              <i class="fa fa-address-card fa-lg mr-2"></i>
+              <i class="fa fa-calendar-check-o fa-lg"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+    //console.log(movCol)
+    actionRow.appendChild(movCol)
+  })
+
+  const comedyMov = flatData.filter(movie => movie.category === "comedy")
+  //console.log(horrorMov)
+  comedyMov.forEach(elem => {
+  const comedyRow = document.getElementById("comedy")
+  //console.log(allMovRow)
+  const movCol = document.createElement("div")
+  movCol.classList.add("col", "mb-3", "mb-lg-0", "px-1")
+  movCol.innerHTML = `
+      <div class="col mb-3 mb-lg-0 px-1">
+      <div class="strive-card position-relative">
+        <img class="img-fluid rounded w-100" src="${elem.imageUrl}" />
+
+        <div class="infos-container">
+          <div class="infos-content">
+            <div class="d-flex align-items-center mb-3">
+              <div class="play-btn gradient"></div>
+              <h6 class="mb-0 ml-2">Play</h6>
+              <span class="plus ml-auto">
+
+              </span>
+            </div>
+
+            <h6>${elem.name}</h6>
+            <p>
+              ${elem.description}
+            </p>
+            <div class="movie-footer">
+              <i class="fa fa-address-card fa-lg mr-2"></i>
+              <i class="fa fa-calendar-check-o fa-lg"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+    //console.log(movCol)
+    comedyRow.appendChild(movCol)
+  })
+  const dramaMov = flatData.filter(movie => movie.category === "drama")
+  console.log(dramaMov)
+  dramaMov.forEach(elem => {
+  const dramaRow = document.getElementById("drama")
+  //console.log(allMovRow)
+  const movCol = document.createElement("div")
+  movCol.classList.add("col", "mb-3", "mb-lg-0", "px-1")
+  movCol.innerHTML = `
+      <div class="col mb-3 mb-lg-0 px-1">
+      <div class="strive-card position-relative">
+        <img class="img-fluid rounded w-100" src="${elem.imageUrl}" />
+
+        <div class="infos-container">
+          <div class="infos-content">
+            <div class="d-flex align-items-center mb-3">
+              <div class="play-btn gradient"></div>
+              <h6 class="mb-0 ml-2">Play</h6>
+              <span class="plus ml-auto">
+
+              </span>
+            </div>
+
+            <h6>${elem.name}</h6>
+            <p>
+              ${elem.description}
+            </p>
+            <div class="movie-footer">
+              <i class="fa fa-address-card fa-lg mr-2"></i>
+              <i class="fa fa-calendar-check-o fa-lg"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+    console.log(movCol)
+    dramaRow.appendChild(movCol)
+  })
+
+
 }).catch((error) => {
 	console.log(error);
 });}
-
-const getHorror = async () => {
-  try {
-    let resp = await fetch(mainUrl + "horror", {
-          method: 'GET',
-          headers: {
-            "Content-Type" : "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
-          }
-        })
-    let data = await resp.json()
-    data.forEach(elem => {
-    let horrorMovContainer = document.getElementById("horrorMovies")
-    let movieCard = document.createElement("div")
-    movieCard.classList.add("col", "text-center", "mb-3", "mb-lg-0", "px-1")
-    movieCard.innerHTML = `<img class="img-fluid rounded" src="${elem.imageUrl}" /><span>${elem.name}</span>`
-    horrorMovContainer.appendChild(movieCard)
-    
-  })
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const getDrama = async () => {
-  try {
-    let resp = await fetch(mainUrl + "drama", {
-          method: 'GET',
-          headers: {
-            "Content-Type" : "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
-          }
-        })
-    let data = await resp.json()
-    data.forEach(elem => {
-    let dramaMovContainer = document.getElementById("dramaMovies")
-    let movieCard = document.createElement("div")
-    movieCard.classList.add("col", "text-center", "mb-3", "mb-lg-0", "px-1")
-    movieCard.innerHTML = `<img class="img-fluid rounded" src="${elem.imageUrl}" /><span>${elem.name}</span>`
-    dramaMovContainer.appendChild(movieCard)
-    
-  })
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-  const getComedy = async () => {
-  try {
-    let resp = await fetch(mainUrl + "comedy", {
-          method: 'GET',
-          headers: {
-            "Content-Type" : "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
-          }
-        })
-    let data = await resp.json()
-    data.forEach(elem => {
-    let comedyMovContainer = document.getElementById("comedyMovies")
-    let movieCard = document.createElement("div")
-    movieCard.classList.add("col", "text-center", "mb-3", "mb-lg-0", "px-1")
-    movieCard.innerHTML = `<img class="img-fluid rounded" src="${elem.imageUrl}" /><span>${elem.name}</span>`
-    comedyMovContainer.appendChild(movieCard)
-    
-  })
-  } catch (error) {
-    console.log(error) 
-  }
-}
-
-  const getAction = async () => {
-  try {
-    let resp = await fetch(mainUrl + "action", {
-          method: 'GET',
-          headers: {
-            "Content-Type" : "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxZjMxNTg5YzI2ZjAwMTU3ZjljMmMiLCJpYXQiOjE2MTU5ODMzODIsImV4cCI6MTYxNzE5Mjk4Mn0.imIEHolN9xmsiBnjzmaIW3trD3kNRO__6EX26FrJ6bU"
-          }
-        })
-    let data = await resp.json()
-    data.forEach(elem => {
-    let actionMovContainer = document.getElementById("actionMovies")
-    let movieCard = document.createElement("div")
-    movieCard.classList.add("col", "text-center", "mb-3", "mb-lg-0", "px-1")
-    movieCard.innerHTML = `<img class="img-fluid rounded" src="${elem.imageUrl}" /><span>${elem.name}</span>`
-    actionMovContainer.appendChild(movieCard)
-    
-  })
-  } catch (error) {
-    console.log(error) 
-  }
-}
-
 
 
 const handleSubmit = async (e) => {

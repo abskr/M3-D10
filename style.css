@@ -19,6 +19,10 @@
   bottom: 20px;
 } */
 
+h3 {
+  text-transform: capitalize;
+}
+
 select#category {
      display: block;
      width: 100%;
@@ -34,3 +38,200 @@ select#category {
      border-radius: .25rem;
      transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
    }
+
+.carousel {
+  margin-top: 77px;
+}
+
+.carousel-indicators li {
+  width: 13px;
+  height: 13px;
+  border-top: none;
+  border-bottom: none;
+  box-shadow: 1px 1px 4px rgb(0 0 0 / 40%);
+  border-radius: 50%;
+}
+
+.strive-card {
+  transform: scale(1);
+  transition: 0.3s ease-in-out;
+  z-index: 8;
+}
+
+.strive-card:hover {
+  transform: scale(1.08);
+  z-index: 9;
+}
+
+.strive-card:hover img:first-of-type {
+  border: 2px solid #00a8e1;
+  border-bottom: none;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.strive-card:hover .infos-container {
+  transform: translateY(-48px);
+  opacity: 1;
+  pointer-events: initial;
+  border: 2px solid #00a8e1;
+  border-top: none;
+  border-radius: 3px;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.strive-card:hover p:not(p.prime) {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.strive-card:hover .movie-footer {
+  opacity: 1;
+}
+
+.strive-card:hover .play-btn,
+.strive-card:hover .plus,
+.strive-card:hover h6 {
+  opacity: 1;
+  transform: translateX(0) rotate(0);
+}
+
+.infos-container {
+  position: absolute;
+  background: #1b2530;
+  background: linear-gradient(rgba(27, 37, 48, 0), #1b2530 48px);
+  color: white;
+  left: 0;
+  right: 0;
+  transform: translateY(-52px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.infos-content {
+  padding: 48px 1rem 1.5rem;
+  overflow: hidden;
+}
+
+.play-btn:not(:hover) {
+  background: black;
+}
+
+.play-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+  transform: translateX(-200px);
+  opacity: 0;
+  transition: transform 0.3s ease 0.4s, opacity 0.3s ease-out 0.55s;
+}
+
+.play-btn:hover {
+  animation: gradientSlide 4s ease infinite;
+  border: 0px solid transparent;
+}
+
+.play-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 2px;
+  margin: auto;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 7px 0 7px 10px;
+  border-color: transparent transparent transparent white;
+}
+
+.gradient {
+  background: linear-gradient(270deg,
+      rgb(76, 175, 125) 0%,
+      rgb(165, 230, 13) 100%);
+  background-size: 400% 400%;
+}
+
+@keyframes gradientSlide {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.plus {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transform: translateX(32px) rotate(160deg);
+  opacity: 0;
+  transition: all 0.3s ease 0.55s;
+}
+
+.plus::before {
+  content: "";
+  position: absolute;
+  width: 2px;
+  background-color: white;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+
+.plus::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  background-color: white;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+
+.infos-content>div h6 {
+  transform: translateX(-40px);
+  transition: transform 0.3s ease-in-out 0.35s;
+}
+
+.infos-content p {
+  font-size: 0.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.infos-content p:not(p.prime) {
+  transform: translateY(-4px);
+  opacity: 0;
+  transition: all 0.3s ease 0.2s;
+}
+
+.infos-content p.prime {
+  color: #00a8e1;
+}
+
+.infos-content .movie-footer {
+  font-size: 0.8rem;
+  color: #8197a4;
+  opacity: 0;
+  transition: all 0.3s ease 0.3s;
+}
